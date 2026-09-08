@@ -101,7 +101,7 @@ function setupPlugin(ctxBundle: ReturnType<typeof fakeTuiCtx>) {
   plugin.setup(ctxBundle.ctx)
   const appClaim = ctxBundle.slotCalls.find((c) => c.append === "app")
   if (appClaim) (appClaim as AnyCtx).render()
-  const sidebarClaim = ctxBundle.slotCalls.find((c) => c.after === "sidebar.content")
+  const sidebarClaim = ctxBundle.slotCalls.find((c) => c.before === "sidebar.footer")
   expect(sidebarClaim).toBeDefined()
   return sidebarClaim as { render: (input: unknown) => unknown }
 }
@@ -162,11 +162,11 @@ describe("server entrypoint", () => {
 })
 
 describe("setup", () => {
-  test("registers the sidebar slot after sidebar.content and the app slot", () => {
+  test("registers the sidebar slot before sidebar.footer and the app slot", () => {
     const bundle = fakeTuiCtx()
     plugin.setup(bundle.ctx)
-    expect(bundle.slotCalls.map((c) => c.append ?? c.after)).toEqual(["app", "sidebar.content"])
-    expect(bundle.slotCalls[1].after).toBe("sidebar.content")
+    expect(bundle.slotCalls.map((c) => c.append ?? c.before ?? c.after)).toEqual(["app", "sidebar.footer"])
+    expect(bundle.slotCalls[1].before).toBe("sidebar.footer")
   })
 
   test("setup resets built-ins visibility to the visible default", async () => {
@@ -215,7 +215,7 @@ describe("setup", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
     const bundle = fakeTuiCtx({ slotThrowsOnApp: true })
     plugin.setup(bundle.ctx)
-    expect(bundle.slotCalls.some((c) => c.after === "sidebar.content")).toBe(true)
+    expect(bundle.slotCalls.some((c) => c.before === "sidebar.footer")).toBe(true)
     expect(warn).toHaveBeenCalled()
     warn.mockRestore()
   })

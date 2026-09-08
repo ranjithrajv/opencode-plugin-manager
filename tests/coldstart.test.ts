@@ -63,8 +63,8 @@ describe("cold start", () => {
     const { ctx, slots } = emptyCtx("/nonexistent-project")
     const cleanup = await plugin.setup(ctx)
     expect(typeof cleanup).toBe("function")
-    const targets = slots.map((s) => s.after ?? s.append ?? s.replace)
-    expect(targets).toContain("sidebar.content")
+    const targets = slots.map((s) => s.before ?? s.after ?? s.append ?? s.replace)
+    expect(targets).toContain("sidebar.footer")
     expect(targets).toContain("app")
     expect(() => cleanup()).not.toThrow()
   })
@@ -72,7 +72,7 @@ describe("cold start", () => {
   test("an empty workspace renders no rows instead of crashing", async () => {
     const { ctx, slots } = emptyCtx("/empty-workspace")
     await plugin.setup(ctx)
-    const content = slots.find((s) => s.after === "sidebar.content") as any
+    const content = slots.find((s) => s.before === "sidebar.footer") as any
     expect(content).toBeTruthy()
     // Mounting the widget against the empty context must not throw; an
     // empty list renders nothing.

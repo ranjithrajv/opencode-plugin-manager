@@ -947,10 +947,7 @@ export default Plugin.define({
     })
     builtins.registerCommand()
 
-    // Placed with `after` so it renders below the built-in sidebar.content
-    // appends (Context, MCP). Ordering among plugins on the same slot follows
-    // the opencode.json `plugins` array — register this plugin after
-    // opencode-skill-lister so the section sits under MCP and Skills.
+    // Placed after sidebar.content so it renders below built-in content.
     return context.ui.slot({
       after: "sidebar.content",
       render: ({ sessionID }: { sessionID?: string }) => <PluginList sessionID={sessionID} />,
