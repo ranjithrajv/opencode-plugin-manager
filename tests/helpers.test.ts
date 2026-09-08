@@ -270,6 +270,13 @@ describe("readConfig", () => {
   test("missing/unparseable file", () => {
     expect(readConfig(join(root, "missing.json"))).toEqual({ ok: false, plugins: [], rest: {} })
   })
+
+  test("a config whose root is a scalar or null is rejected", () => {
+    writeFileSync(join(root, "scalar.json"), "42")
+    expect(readConfig(join(root, "scalar.json"))).toEqual({ ok: false, plugins: [], rest: {} })
+    writeFileSync(join(root, "null.json"), "null")
+    expect(readConfig(join(root, "null.json"))).toEqual({ ok: false, plugins: [], rest: {} })
+  })
 })
 
 describe("loadEntries", () => {

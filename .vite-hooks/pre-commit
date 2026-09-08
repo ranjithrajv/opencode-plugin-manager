@@ -1,1 +1,4 @@
 vp staged
+
+# 100% coverage gate: the suite must pass with every threshold met.
+bunx vitest run --coverage.enabled
