@@ -1,0 +1,50 @@
+{
+  "name": "opencode-plugin-manager",
+  "version": "0.1.0",
+  "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "plugins",
+    "sidebar"
+  ],
+  "license": "AGPL-3.0",
+  "author": "Ranjith Raj",
+  "files": [
+    "index.ts",
+    "tui.tsx",
+    "builtins.ts"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./tui": "./tui.tsx"
+  },
+  "scripts": {
+    "check": "vp check",
+    "check:fix": "vp check --fix",
+    "fmt": "vp fmt",
+    "lint": "vp lint",
+    "typecheck": "vp check --typecheck",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "beta",
+    "opencode-plugin-kit": "file:../opencode-plugin-kit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.0",
+    "happy-dom": "^20.14.0",
+    "js-tokens": "^10.0.0",
+    "typescript": "^7.0.2",
+    "vite-plugin-solid": "^2.11.14",
+    "vite-plus": "^0.1.16",
+    "vitest": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@opentui/core": "^0.5.11",
+    "@opentui/solid": "^0.5.11",
+    "solid-js": "^1.9.15"
+  },
+  "packageManager": "bun@1.4.2"
+}
