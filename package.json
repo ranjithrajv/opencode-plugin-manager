@@ -1,5 +1,5 @@
 {
-  "name": "@ranjithrajv/opencode-plugin-manager",
+  "name": "@ranjithraj/opencode-plugin-manager",
   "version": "1.0.0-alpha.1",
   "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
   "keywords": [
