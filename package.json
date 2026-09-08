@@ -41,7 +41,7 @@
     "@vitest/coverage-v8": "^5.0.0",
     "happy-dom": "^20.14.0",
     "js-tokens": "^10.0.0",
-    "opencode-plugin-kit": "^1.0.0-alpha.2",
+    "opencode-plugin-kit": "^1.0.0-alpha.5",
     "solid-js": "1.9.15",
     "typescript": "^7.0.2",
     "vite": "^7.0.0",
