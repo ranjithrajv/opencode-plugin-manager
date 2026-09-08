@@ -1,5 +1,14 @@
 # opencode-plugin-manager
 
+[![CI](https://github.com/ranjithrajv/opencode-plugin-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/ranjithrajv/opencode-plugin-manager/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/opencode-plugin-browser)](https://www.npmjs.com/package/opencode-plugin-browser)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
+
+> **Note:** this plugin is published on npm as `opencode-plugin-browser` —
+> the original project name, kept for package continuity. The repository and
+> README title use `opencode-plugin-manager`; both refer to the same package.
+> Install it by the npm name shown below.
+
 An [OpenCode](https://opencode.ai) sidebar section listing **plugins** with
 installed/uninstalled status — placed below the built-in MCP section and the
 Skills list, mirroring the built-in sidebar widgets.
@@ -47,16 +56,26 @@ Published on [npm](https://www.npmjs.com/package/opencode-plugin-browser).
 npm install opencode-plugin-browser
 ```
 
+Restart the TUI (or `opencode2 service restart`) after changing the config.
+
+## Prerequisites
+
+- OpenCode **V2** (plugin API is beta)
 
 Placement: appends to `sidebar.content` (below **MCP**/**Skills**). If you use
 multiple sidebar plugins, order in `plugins` controls stacking.
+
+## Remove
+
+Remove the plugin's entry from the `plugins` array in `opencode.json`.
 
 ## Data sources
 
 - Plugin registry: `client.plugin.list()` (activation state included)
 - Workspace scan: sibling directories of the current location, one
   `package.json` read per candidate; result is cached through
-  [opencode-plugin-kit](../opencode-plugin-kit)'s `createCachedStore` so the
+  [opencode-plugin-kit](https://github.com/ranjithrajv/opencode-plugin-kit)'s
+  `createCachedStore` so the
   sidebar restores instantly after a TUI restart.
 
 ## License
