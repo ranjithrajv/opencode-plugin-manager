@@ -1,3 +1,4 @@
+/** @jsxImportSource @opentui/solid */
 import { Plugin, usePlugin } from "@opencode-ai/plugin/tui"
 import { createSignal, For, Show } from "solid-js"
 import { readdirSync, readFileSync, statSync } from "node:fs"
@@ -920,6 +921,19 @@ let builtins: Toggle
 export default Plugin.define({
   id: "plugin-manager.cli",
   setup(context: any) {
+    // Claim the sidebar slot FIRST, before any view-state init: a failed or
+    // delayed claim renders nothing. Anchor above the footer —
+    // `after: "sidebar.content"` lands in a region the slot tree never shows.
+    let cleanupView: (() => void) | undefined
+    try {
+      cleanupView = context.ui.slot({
+        before: "sidebar.footer",
+        render: ({ sessionID }: { sessionID?: string }) => <PluginList sessionID={sessionID} />,
+      })
+    } catch (error) {
+      console.warn("[plugin-manager] failed to claim sidebar slot", error)
+    }
+
     cache = createCachedStore<Entry[] | null>(context, "plugin-manager", {
       initial: null,
       staleAfterMs: 60_000,
@@ -942,10 +956,8 @@ export default Plugin.define({
     })
     builtins.registerCommand()
 
-    // Placed after sidebar.content so it renders below built-in content.
-    return context.ui.slot({
-      after: "sidebar.content",
-      render: ({ sessionID }: { sessionID?: string }) => <PluginList sessionID={sessionID} />,
-    })
+    return () => {
+      cleanupView?.()
+    }
   },
 })

@@ -165,8 +165,8 @@ describe("setup", () => {
   test("registers the sidebar slot before sidebar.footer and the app slot", () => {
     const bundle = fakeTuiCtx()
     plugin.setup(bundle.ctx)
-    expect(bundle.slotCalls.map((c) => c.append ?? c.before ?? c.after)).toEqual(["app", "sidebar.footer"])
-    expect(bundle.slotCalls[1].before).toBe("sidebar.footer")
+    expect(bundle.slotCalls.map((c) => c.append ?? c.before ?? c.after)).toEqual(["sidebar.footer", "app"])
+    expect(bundle.slotCalls[0].before).toBe("sidebar.footer")
   })
 
   test("setup resets built-ins visibility to the visible default", async () => {
