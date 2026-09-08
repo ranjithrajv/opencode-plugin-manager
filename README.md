@@ -33,15 +33,23 @@ MCP/Skills sections.
 
 ## Install
 
-```sh
-# in opencode.jsonc
-{ "plugins": ["./opencode-usage-quota-tracker", "./opencode-skill-lister", "./opencode-plugin-manager", "./opencode-model-recommender"] }
+Published on [npm](https://www.npmjs.com/package/opencode-plugin-browser).
+
+**Automatic (recommended)** — add it to your OpenCode config (`~/.config/opencode/opencode.json`) and it installs on startup:
+
+```jsonc
+{ "plugins": ["opencode-plugin-browser"] }
 ```
 
-Order matters: plugins sharing the `sidebar.content` slot render in
-`plugins` array order — keep this entry after `opencode-skill-lister` (and
-before anything you want below it) so the section sits directly under
-**MCP** and **Skills**.
+**Manual**:
+
+```sh
+npm install opencode-plugin-browser
+```
+
+
+Placement: appends to `sidebar.content` (below **MCP**/**Skills**). If you use
+multiple sidebar plugins, order in `plugins` controls stacking.
 
 ## Data sources
 
