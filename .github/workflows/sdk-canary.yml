@@ -47,7 +47,8 @@ jobs:
           import json, os
           p = 'package.json'
           pkg = json.load(open(p))
-          pkg['dependencies']['@opencode-ai/plugin'] = os.environ['SDK_VERSION']
+          key = 'dependencies' if '@opencode-ai/plugin' in pkg.get('dependencies', {}) else 'peerDependencies'
+pkg[key]['@opencode-ai/plugin'] = os.environ['SDK_VERSION']
           pkg['version'] = '1.0.0-alpha.' + str(int(pkg['version'].split('alpha.')[1]) + 1)
           json.dump(pkg, open(p, 'w'), indent=2)
           open(p, 'a').write('\n')
