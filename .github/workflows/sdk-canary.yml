@@ -28,7 +28,7 @@ jobs:
           echo "Testing against @opencode-ai/plugin@$VER"
           mkdir -p /tmp/canary && cd /tmp/canary
           npm init -y > /dev/null
-          npm install --no-save --legacy-peer-deps "@opencode-ai/plugin@$VER" "opencode-plugin-manager@alpha"
+          npm install --no-save --legacy-peer-deps "@opencode-ai/plugin@$VER" "opencode-plugin-browser@alpha"
           bun -e "import('opencode-plugin-manager').then(m => { if (typeof m.default?.setup !== 'function') throw new Error('default export has no setup()') })"
           echo "canary green"
 
