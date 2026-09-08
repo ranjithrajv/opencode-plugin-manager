@@ -100,7 +100,7 @@ function fakeTuiCtx(opts: CtxOpts = {}) {
 function setupPlugin(ctxBundle: ReturnType<typeof fakeTuiCtx>) {
   plugin.setup(ctxBundle.ctx)
   const appClaim = ctxBundle.slotCalls.find((c) => c.append === "app")
-  appClaim && (appClaim as AnyCtx).render()
+  if (appClaim) (appClaim as AnyCtx).render()
   const sidebarClaim = ctxBundle.slotCalls.find((c) => c.after === "sidebar.content")
   expect(sidebarClaim).toBeDefined()
   return sidebarClaim as { render: (input: unknown) => unknown }
@@ -194,6 +194,7 @@ describe("setup", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
     const bundle = fakeTuiCtx({ brokenStoreKey: "builtins" })
     const sidebar = setupPlugin(bundle)
+    void sidebar
     bundle.commands[0].run()
     bundle.commands[0].run()
     expect(document.body.textContent).toBeDefined()

@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest"
-import { createComponent, createRoot } from "solid-js"
+import { createComponent } from "solid-js"
 import { render as renderTree } from "solid-js/web"
 import { PluginContextProvider } from "@opencode-ai/plugin/tui"
 import plugin from "../tui.js"
