@@ -1,5 +1,5 @@
 {
-  "name": "opencode-plugin-manager",
+  "name": "@ranjithrajv/opencode-plugin-manager",
   "version": "0.1.0",
   "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
   "keywords": [
@@ -10,6 +10,10 @@
   ],
   "license": "AGPL-3.0",
   "author": "Ranjith Raj",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranjithrajv/opencode-plugin-manager.git"
+  },
   "files": [
     "index.ts",
     "tui.tsx",
@@ -20,17 +24,21 @@
     ".": "./index.ts",
     "./tui": "./tui.tsx"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "check": "vp check",
     "check:fix": "vp check --fix",
     "fmt": "vp fmt",
     "lint": "vp lint",
-    "typecheck": "vp check --typecheck",
-    "test": "vp test"
+    "typecheck": "tsc --noEmit",
+    "test": "vp test",
+    "test:coverage": "vitest run --coverage.enabled"
   },
   "dependencies": {
     "@opencode-ai/plugin": "beta",
-    "opencode-plugin-kit": "file:../opencode-plugin-kit"
+    "opencode-plugin-kit": "^1.0.0-alpha.1"
   },
   "devDependencies": {
     "@types/node": "^26.5.0",
