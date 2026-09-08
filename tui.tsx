@@ -121,9 +121,8 @@ export function configEntry(entry: string, docDir: string): Entry | null {
   const name =
     e.startsWith("http") || e.includes("://") ? stripVersion(basename(e).replace(/\.git$/, "")) : stripVersion(e)
   // A specifier that survives the branches above always yields a non-empty
-  // name; the empty fallback is defensive only.
-  /* v8 ignore next */
-  return name ? { name, kind: "npm", configOnly: true } : null
+  // name (empty input returns early; stripVersion never erases one).
+  return { name, kind: "npm", configOnly: true }
 }
 
 // Load every plugin from two complementary sources:
@@ -781,10 +780,8 @@ export function PluginList(props: { sessionID?: string }) {
   // change (plugins load at startup).
   const [note, setNote] = createSignal<{ ok: boolean; text: string } | null>(null)
   const onToggle = async (e: Entry) => {
-    // Built-in rows route to selectRow() and render no control, so this
-    // guard is defensive only.
-    /* v8 ignore next */
-    if (e.kind === "builtin") return
+    // Built-in rows render no [–]/[+] control and route row clicks to
+    // selectRow() instead, so built-ins never reach this handler.
     const root = workspaceDirectory(ctx)
     try {
       const message = await toggleInstalled(ctx, root, e)
@@ -792,10 +789,8 @@ export function PluginList(props: { sessionID?: string }) {
       showToast(ctx, message)
       await entries.refetchNow()
     } catch (err: any) {
-      // toggleInstalled only ever throws Errors; the ?? fallbacks are
-      // defensive only.
-      /* v8 ignore next */
-      const text = String(err?.message ?? err ?? "toggle failed")
+      // toggleInstalled only ever throws Errors; use the message directly.
+      const text = err.message as string
       setNote({ ok: false, text })
       showToast(ctx, text, "error")
     }
