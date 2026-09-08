@@ -1,6 +1,6 @@
 {
   "name": "opencode-plugin-browser",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
   "keywords": [
     "opencode",
@@ -54,7 +54,7 @@
   "peerDependencies": {
     "@opentui/core": "^0.5.11",
     "@opentui/solid": "^0.5.11",
-    "solid-js": "^1.9.15"
+    "solid-js": "^1.9.12"
   },
   "packageManager": "npm@11.19.1"
 }
