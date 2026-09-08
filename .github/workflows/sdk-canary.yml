@@ -38,22 +38,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SDK_VERSION: ${{ steps.probe.outputs.version }}
         run: |
-          VER="$SDK_VERSION"
-          BR="canary/sdk-bump-$VER"
           git config user.name "sdk-canary-bot"
           git config user.email "actions@users.noreply.github.com"
-          git checkout -b "$BR"
-          cat > /tmp/bump.py <<'PY'
-          import json, os
-          p = 'package.json'
-          pkg = json.load(open(p))
-          key = 'dependencies' if '@opencode-ai/plugin' in pkg.get('dependencies', {}) else 'peerDependencies'
-pkg[key]['@opencode-ai/plugin'] = os.environ['SDK_VERSION']
-          pkg['version'] = '1.0.0-alpha.' + str(int(pkg['version'].split('alpha.')[1]) + 1)
-          json.dump(pkg, open(p, 'w'), indent=2)
-          open(p, 'a').write('\n')
-          PY
-          SDK_VERSION="$SDK_VERSION" python3 /tmp/bump.py
-          git commit -am "chore: bump @opencode-ai/plugin pin to $VER (canary green)"
-          git push -u origin "$BR" --force 2>&1 | tail -1
-          gh pr create --title "chore: bump @opencode-ai/plugin pin to $VER" --body "Nightly SDK canary passed: published package imports cleanly against @opencode-ai/plugin@$VER." || true
+          git checkout -b "canary/sdk-bump-$SDK_VERSION"
+          python3 scripts/bump-pin.py
+          git commit -am "chore: bump @opencode-ai/plugin pin to $SDK_VERSION (canary green)"
+          git push -u origin "canary/sdk-bump-$SDK_VERSION" --force 2>\&1 | tail -1
+          gh pr create --title "chore: bump @opencode-ai/plugin pin to $SDK_VERSION" --body "Nightly SDK canary passed: published package imports cleanly against @opencode-ai/plugin@$SDK_VERSION." || true
