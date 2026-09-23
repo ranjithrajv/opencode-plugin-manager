@@ -34,14 +34,14 @@
     "test:coverage": "vitest run --coverage.enabled"
   },
   "devDependencies": {
-    "@opencode-ai/plugin": "beta",
+    "@opencode/plugin": "^2.0.15",
     "@opentui/core": "^0.5.11",
     "@opentui/solid": "^0.5.11",
     "@types/node": "^26.5.0",
     "@vitest/coverage-v8": "^5.0.0",
     "happy-dom": "^20.14.0",
     "js-tokens": "^10.0.0",
-    "opencode-plugin-kit": "^1.0.0-alpha.5",
+    "opencode-plugin-kit": "file:../opencode-plugin-kit",
     "solid-js": "1.9.15",
     "typescript": "^7.0.2",
     "vite": "^7.0.0",
@@ -50,10 +50,10 @@
     "vitest": "^5.0.0"
   },
   "peerDependencies": {
-    "@opencode-ai/plugin": ">=1.18.25 <2 || 0.0.0-beta-19242",
+    "@opencode/plugin": "^2.0.15",
     "@opentui/core": "^0.5.11",
     "@opentui/solid": "^0.5.11",
-    "opencode-plugin-kit": "^1.0.0-alpha.1",
+    "opencode-plugin-kit": "file:../opencode-plugin-kit",
     "solid-js": "^1.9.12"
   },
   "packageManager": "npm@11.19.1"

@@ -22,7 +22,7 @@ export default defineConfig({
       { find: /^solid-js\/web$/, replacement: path.join(root, "node_modules/solid-js/web/dist/dev.js") },
     ],
     conditions: ["browser", "development"],
-    dedupe: ["solid-js", "@opencode-ai/plugin", "@opencode-ai/plugin/tui", "@opentui/solid"],
+    dedupe: ["solid-js", "@opencode/plugin", "@opencode/plugin/tui", "@opentui/solid"],
   },
   test: {
     environment: "happy-dom",

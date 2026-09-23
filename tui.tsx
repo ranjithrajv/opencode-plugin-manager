@@ -1,5 +1,5 @@
 /** @jsxImportSource @opentui/solid */
-import { Plugin, usePlugin } from "@opencode-ai/plugin/tui"
+import { Plugin, usePlugin } from "@opencode/plugin/tui"
 import { createSignal, For, Show } from "solid-js"
 import { readdirSync, readFileSync, statSync } from "node:fs"
 import { basename, dirname, join } from "node:path"
@@ -46,8 +46,8 @@ export const DEFAULT_COLLAPSED: Partial<Record<Kind, boolean>> = {
 }
 
 // A directory is a plugin project when its package.json depends on the
-// OpenCode plugin API and isn't a private monorepo root or the shared kit
-// library (which has no plugin dependency).
+// OpenCode plugin API (`@opencode/plugin`) and isn't a private monorepo root
+// or the shared kit library (which has no plugin dependency).
 export function isPluginProject(dir: string): { name: string; description?: string } | null {
   try {
     const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8"))
@@ -56,7 +56,7 @@ export function isPluginProject(dir: string): { name: string; description?: stri
       ...pkg.dependencies,
       ...pkg.peerDependencies,
     }
-    if ("@opencode-ai/plugin" in deps) {
+    if ("@opencode/plugin" in deps) {
       return {
         name: String(pkg.name ?? basename(dir)),
         description: pkg.description ? String(pkg.description) : undefined,
@@ -799,7 +799,7 @@ export function PluginList(props: { sessionID?: string }) {
 
   const row = (e: Entry) => {
     const uninstalled = e.status === "uninstalled"
-    const fg = uninstalled ? theme.text.subdued : theme.text.default
+    const fg = uninstalled ? theme.text.muted : theme.text.base
     const glyph = uninstalled ? "○" : (STATUS_GLYPH[e.status ?? ""] ?? "•")
     const version = e.version ? ` ${e.version}` : ""
     const flag = e.outdated ? " ⚠ update" : ""
@@ -810,7 +810,7 @@ export function PluginList(props: { sessionID?: string }) {
       text: `${e.name}${version}${flag}`,
       state,
       fg,
-      stateFg: state === "failed" ? theme.text.default : theme.text.subdued,
+      stateFg: state === "failed" ? theme.text.base : theme.text.muted,
       // Explicit per-row control: [–] removes the config entry, [+] registers
       // it. Built-ins aren't config-managed, so no control.
       control: e.kind === "builtin" ? "" : uninstalled ? "[+]" : "[–]",
@@ -834,14 +834,14 @@ export function PluginList(props: { sessionID?: string }) {
             {r.state}
           </text>
           <Show when={r.control}>
-            <text fg={theme.text.subdued} flexShrink={0} onMouseDown={() => onToggle(e)}>
+            <text fg={theme.text.muted} flexShrink={0} onMouseDown={() => onToggle(e)}>
               {r.control}
             </text>
           </Show>
         </box>
         <Show when={selected() === e.name}>
           <box flexDirection="column" marginLeft={3} onMouseDown={() => selectRow(e)}>
-            <text fg={theme.text.subdued} wrapMode="none">
+            <text fg={theme.text.muted} wrapMode="none">
               {e.kind === "builtin"
                 ? describeBuiltin(e.name)
                 : (e.description ?? "No description — check the project's package.json.")}
@@ -862,7 +862,7 @@ export function PluginList(props: { sessionID?: string }) {
           pinned={
             <Show when={note()}>
               {(n) => (
-                <text fg={n().ok ? theme.text.subdued : theme.text.default} wrapMode="none" truncate>
+                <text fg={n().ok ? theme.text.muted : theme.text.base} wrapMode="none" truncate>
                   {n().ok ? "" : "✗ "}
                   {n().text}
                 </text>
@@ -880,7 +880,7 @@ export function PluginList(props: { sessionID?: string }) {
                 {(collapsed) => (
                   <>
                     <Show when={g.kind === "builtin" && !collapsed()}>
-                      <text fg={theme.text.subdued} wrapMode="none" truncate>
+                      <text fg={theme.text.muted} wrapMode="none" truncate>
                         built-ins can't be disabled individually;{" "}
                         {process.env.OPENCODE_DISABLE_DEFAULT_PLUGINS
                           ? "OPENCODE_DISABLE_DEFAULT_PLUGINS is on (all off)"

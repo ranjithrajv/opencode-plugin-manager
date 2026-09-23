@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { createComponent } from "solid-js"
 import { render as renderTree } from "solid-js/web"
-import { PluginContextProvider } from "@opencode-ai/plugin/tui"
+import { PluginContextProvider } from "@opencode/plugin/tui"
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest"
 import plugin, { GROUP_ORDER } from "../tui.tsx"
 import serverPlugin from "../index.ts"
@@ -32,6 +32,7 @@ interface CtxOpts {
   brokenStoreKey?: string
   keymapThrows?: boolean
   slotThrowsOnApp?: boolean
+  slotThrowsOnSidebar?: boolean
 }
 
 type AnyCtx = Record<string, any>
@@ -52,6 +53,7 @@ function fakeTuiCtx(opts: CtxOpts = {}) {
   const ui: AnyCtx = {
     slot: vi.fn((claim: Record<string, unknown>) => {
       if (opts.slotThrowsOnApp && claim.append === "app") throw new Error("no slots")
+      if (opts.slotThrowsOnSidebar && claim.before === "sidebar.footer") throw new Error("no slots")
       slotCalls.push(claim)
       return () => {}
     }),
@@ -59,7 +61,7 @@ function fakeTuiCtx(opts: CtxOpts = {}) {
   if (opts.withToast !== false) ui.toast = toast
   const ctx: AnyCtx = {
     location: opts.location ?? undefined,
-    theme: { text: { default: "#ffffff", subdued: "#888888" } },
+    theme: { text: { base: "#ffffff", muted: "#888888" } },
     storage: {
       store(key: string, o: { initial: unknown }) {
         if (key === opts.brokenStoreKey) throw new Error("storage down")
@@ -143,7 +145,7 @@ const localPlugin = (dir: string, description?: string) => {
     mkdirSync(dir, { recursive: true })
     writeFileSync(
       join(dir, "package.json"),
-      JSON.stringify({ name: "loc", description, dependencies: { "@opencode-ai/plugin": "*" } }),
+      JSON.stringify({ name: "loc", description, dependencies: { "@opencode/plugin": "*" } }),
     )
   }
   return { id: "loc", source: { type: "local", path: join(dir, "index.ts") }, state: { status: "active" } }
@@ -167,6 +169,14 @@ describe("setup", () => {
     plugin.setup(bundle.ctx)
     expect(bundle.slotCalls.map((c) => c.append ?? c.before ?? c.after)).toEqual(["sidebar.footer", "app"])
     expect(bundle.slotCalls[0].before).toBe("sidebar.footer")
+  })
+
+  test("a throwing sidebar slot claim is swallowed", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+    const bundle = fakeTuiCtx({ slotThrowsOnSidebar: true })
+    expect(() => plugin.setup(bundle.ctx)).not.toThrow()
+    expect(warn).toHaveBeenCalledWith("[plugin-manager] failed to claim sidebar slot", expect.any(Error))
+    warn.mockRestore()
   })
 
   test("setup resets built-ins visibility to the visible default", async () => {
@@ -301,7 +311,7 @@ describe("PluginList rendering", () => {
     mkdirSync(join(root, "orphan"), { recursive: true })
     writeFileSync(
       join(root, "orphan", "package.json"),
-      JSON.stringify({ name: "orphan", dependencies: { "@opencode-ai/plugin": "*" } }),
+      JSON.stringify({ name: "orphan", dependencies: { "@opencode/plugin": "*" } }),
     )
     const bundle = fakeTuiCtx({ registry: [builtin("b1"), builtin("b2")] })
     const sidebar = setupPlugin(bundle)
@@ -466,7 +476,7 @@ describe("PluginList rendering", () => {
     mkdirSync(join(root, "loc"), { recursive: true })
     writeFileSync(
       join(root, "loc", "package.json"),
-      JSON.stringify({ name: "loc", dependencies: { "@opencode-ai/plugin": "*" } }),
+      JSON.stringify({ name: "loc", dependencies: { "@opencode/plugin": "*" } }),
     )
     const bundle = fakeTuiCtx({
       registry: [{ id: "loc", source: { type: "local", path: join(root, "loc", "index.ts") } }, builtin("b1")],
@@ -493,7 +503,7 @@ describe("PluginList rendering", () => {
     mkdirSync(join(root, "orphan"), { recursive: true })
     writeFileSync(
       join(root, "orphan", "package.json"),
-      JSON.stringify({ name: "orphan", dependencies: { "@opencode-ai/plugin": "*" } }),
+      JSON.stringify({ name: "orphan", dependencies: { "@opencode/plugin": "*" } }),
     )
     const bundle = fakeTuiCtx({ registry: [builtin("b1"), builtin("b2"), builtin("b3")] })
     const sidebar = setupPlugin(bundle)

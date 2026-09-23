@@ -44,22 +44,22 @@ describe("constants", () => {
 })
 
 describe("isPluginProject", () => {
-  test("returns the package name when @opencode-ai/plugin is a dependency", () => {
+  test("returns the package name when @opencode/plugin is a dependency", () => {
     writePkg(join(root, "a"), {
       name: "my-plugin",
       description: "does things",
-      dependencies: { "@opencode-ai/plugin": "*" },
+      dependencies: { "@opencode/plugin": "*" },
     })
     expect(isPluginProject(join(root, "a"))).toEqual({ name: "my-plugin", description: "does things" })
   })
 
   test("also accepts peerDependencies and omits empty descriptions", () => {
-    writePkg(join(root, "b"), { name: "peer-plugin", peerDependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "b"), { name: "peer-plugin", peerDependencies: { "@opencode/plugin": "*" } })
     expect(isPluginProject(join(root, "b"))).toEqual({ name: "peer-plugin", description: undefined })
   })
 
   test("private packages are not plugin projects", () => {
-    writePkg(join(root, "c"), { name: "root", private: true, dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "c"), { name: "root", private: true, dependencies: { "@opencode/plugin": "*" } })
     expect(isPluginProject(join(root, "c"))).toBeNull()
   })
 
@@ -69,7 +69,7 @@ describe("isPluginProject", () => {
   })
 
   test("falls back to the directory basename when name is missing", () => {
-    writePkg(join(root, "e"), { dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "e"), { dependencies: { "@opencode/plugin": "*" } })
     expect(isPluginProject(join(root, "e"))).toEqual({ name: "e", description: undefined })
   })
 
@@ -89,10 +89,10 @@ describe("scanWorkspace", () => {
     writePkg(join(root, "plug"), {
       name: "plug",
       description: "a plugin",
-      dependencies: { "@opencode-ai/plugin": "*" },
+      dependencies: { "@opencode/plugin": "*" },
     })
-    writePkg(join(root, ".hidden"), { name: "h", dependencies: { "@opencode-ai/plugin": "*" } })
-    writePkg(join(root, "node_modules", "dep"), { name: "dep", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, ".hidden"), { name: "h", dependencies: { "@opencode/plugin": "*" } })
+    writePkg(join(root, "node_modules", "dep"), { name: "dep", dependencies: { "@opencode/plugin": "*" } })
     writePkg(join(root, "plain"), { name: "plain" })
     mkdirSync(join(root, "nopkg"))
     // package.json that is a directory, not a file
@@ -146,7 +146,7 @@ describe("configEntry", () => {
     writePkg(join(root, "real"), {
       name: "real-plugin",
       description: "real",
-      dependencies: { "@opencode-ai/plugin": "*" },
+      dependencies: { "@opencode/plugin": "*" },
     })
     expect(configEntry("./real", root)).toEqual({
       name: "real-plugin",
@@ -352,7 +352,7 @@ describe("loadEntries", () => {
     writePkg(join(root, "disc"), {
       name: "disc",
       description: "a local plugin",
-      dependencies: { "@opencode-ai/plugin": "*" },
+      dependencies: { "@opencode/plugin": "*" },
     })
     const registry = [{ id: "known", source: { type: "package", target: "known@1.0" } }]
     const config = {
@@ -395,9 +395,9 @@ describe("loadEntries", () => {
     writePkg(join(root, "desc"), {
       name: "desc",
       description: "backfilled",
-      dependencies: { "@opencode-ai/plugin": "*" },
+      dependencies: { "@opencode/plugin": "*" },
     })
-    writePkg(join(root, "nodesc"), { name: "nodesc", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "nodesc"), { name: "nodesc", dependencies: { "@opencode/plugin": "*" } })
     const registry = [
       { id: "d1", source: { type: "local", path: join(root, "desc", "index.ts") } },
       { id: "d2", source: { type: "local", path: join(root, "nodesc", "index.ts") } },
@@ -411,7 +411,7 @@ describe("loadEntries", () => {
   })
 
   test("uninstalled workspace candidates that aren't declared anywhere", async () => {
-    writePkg(join(root, "orphan"), { name: "orphan", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "orphan"), { name: "orphan", dependencies: { "@opencode/plugin": "*" } })
     const entries = await loadEntries(ctx({}), root)
     expect(entries).toEqual([
       {
@@ -425,7 +425,7 @@ describe("loadEntries", () => {
   })
 
   test("covered workspace candidates are not duplicated", async () => {
-    writePkg(join(root, "declared"), { name: "declared", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "declared"), { name: "declared", dependencies: { "@opencode/plugin": "*" } })
     writeFileSync(join(root, "opencode.json"), JSON.stringify({ plugins: ["./declared"] }))
     const registry = [{ id: "declared", source: { type: "local", path: join(root, "declared", "index.ts") } }]
     const entries = await loadEntries(ctx({ registry }), root)
@@ -438,7 +438,7 @@ describe("loadEntries", () => {
     // The registry knows the plugin but reports it uninstalled (e.g. the
     // service hasn't reloaded since it was added to the config). The
     // workspace scan finds the dir, so the stale status is cleared.
-    writePkg(join(root, "fresh"), { name: "fresh", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "fresh"), { name: "fresh", dependencies: { "@opencode/plugin": "*" } })
     const registry = [
       {
         id: "fresh",
@@ -454,7 +454,7 @@ describe("loadEntries", () => {
   test("a registry-reported uninstalled local plugin is marked installed again", async () => {
     // The server registry lists the plugin but its state says "uninstalled";
     // the workspace scan confirms it exists → it is registered, not uninstalled.
-    writePkg(join(root, "loc"), { name: "loc", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "loc"), { name: "loc", dependencies: { "@opencode/plugin": "*" } })
     const registry = [
       {
         id: "loc",
@@ -472,7 +472,7 @@ describe("loadEntries", () => {
     // Registry id "other" (entry name is the target, "whatever") covers the
     // workspace dir "other" by name; no entry carries that name/dir, so the
     // candidate is skipped without crashing.
-    writePkg(join(root, "other"), { name: "other", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "other"), { name: "other", dependencies: { "@opencode/plugin": "*" } })
     const registry = [{ id: "other", source: { type: "package", target: "whatever@1.0" } }]
     const entries = await loadEntries(ctx({ registry }), root)
     expect(entries).toHaveLength(1)
@@ -498,7 +498,7 @@ describe("loadEntries", () => {
   })
 
   test("config docs may be a bare array and may lack a path", async () => {
-    writePkg(join(root, "nop"), { name: "nop", dependencies: { "@opencode-ai/plugin": "*" } })
+    writePkg(join(root, "nop"), { name: "nop", dependencies: { "@opencode/plugin": "*" } })
     writeFileSync(join(root, "opencode.json"), JSON.stringify({ plugins: ["./nop"] }))
     const config = [{ info: { plugins: ["nop"] } }, { path: join(root, "elsewhere.json"), info: { plugins: ["bare"] } }]
     const entries = await loadEntries(ctx({ config }), root)

@@ -10,9 +10,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: [{ find: /^solid-js$/, replacement: "solid-js/dist/solid.js" }],
-    // The kit ships its own peer copies (solid-js, @opencode-ai/plugin);
+    // The kit ships its own peer copies (solid-js, @opencode/plugin);
     // dedupe forces the consumer's copies so context/signals are shared.
-    dedupe: ["solid-js", "@opencode-ai/plugin", "@opencode-ai/plugin/tui", "@opentui/solid"],
+    dedupe: ["solid-js", "@opencode/plugin", "@opencode/plugin/tui", "@opentui/solid"],
     conditions: ["browser", "development"],
   },
   fmt: {

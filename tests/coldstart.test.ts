@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest"
 import { createComponent } from "solid-js"
 import { render as renderTree } from "solid-js/web"
-import { PluginContextProvider } from "@opencode-ai/plugin/tui"
+import { PluginContextProvider } from "@opencode/plugin/tui"
 import plugin from "../tui.js"
 import serverPlugin from "../index.js"
 
@@ -49,7 +49,7 @@ function emptyCtx(root: string) {
     options: {},
     location: { directory: root },
     data: { location: { default: () => ({ directory: root }) } },
-    theme: { text: { default: "#fff", subdued: "#888" } },
+    theme: { text: { base: "#fff", muted: "#888" } },
   }
   return { ctx, slots }
 }
