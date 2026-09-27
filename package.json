@@ -31,7 +31,7 @@
     "lint": "vp lint",
     "typecheck": "tsc --noEmit",
     "test": "vp test",
-    "test:coverage": "vitest run --coverage.enabled"
+    "test:coverage": "vp exec vitest run --coverage"
   },
   "dependencies": {
     "@opencode/plugin": "^2.0.3",
