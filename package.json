@@ -1,6 +1,6 @@
 {
   "name": "opencode-plugin-browser",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
   "keywords": [
     "opencode",
@@ -34,7 +34,7 @@
     "test:coverage": "vitest run --coverage.enabled"
   },
   "dependencies": {
-    "@opencode/plugin": "^2.0.15",
+    "@opencode/plugin": "^2.0.3",
     "opencode-plugin-kit": "^1.0.0-alpha.6",
     "solid-js": "^1.9.12"
   },
