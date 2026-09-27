@@ -1,6 +1,6 @@
 {
   "name": "opencode-plugin-browser",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "Sidebar section listing OpenCode plugins with installed/uninstalled status, below MCPs and Skills.",
   "keywords": [
     "opencode",
@@ -33,8 +33,12 @@
     "test": "vp test",
     "test:coverage": "vitest run --coverage.enabled"
   },
-  "devDependencies": {
+  "dependencies": {
     "@opencode/plugin": "^2.0.15",
+    "opencode-plugin-kit": "^1.0.0-alpha.6",
+    "solid-js": "^1.9.12"
+  },
+  "devDependencies": {
     "@opentui/core": "^0.5.11",
     "@opentui/solid": "^0.5.11",
     "@types/node": "^26.5.0",
@@ -42,7 +46,6 @@
     "happy-dom": "^20.14.0",
     "js-tokens": "^10.0.0",
     "opencode-plugin-kit": "^1.0.0-alpha.6",
-    "solid-js": "1.9.15",
     "typescript": "^7.0.2",
     "vite": "^7.0.0",
     "vite-plugin-solid": "^2.11.14",
@@ -50,11 +53,8 @@
     "vitest": "^5.0.0"
   },
   "peerDependencies": {
-    "@opencode/plugin": "^2.0.15",
     "@opentui/core": "^0.5.11",
-    "@opentui/solid": "^0.5.11",
-    "opencode-plugin-kit": "^1.0.0-alpha.6",
-    "solid-js": "^1.9.12"
+    "@opentui/solid": "^0.5.11"
   },
   "packageManager": "npm@11.19.1"
 }
