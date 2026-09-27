@@ -859,6 +859,7 @@ export function PluginList(props: { sessionID?: string }) {
           title="PLUGINS"
           count={list().length}
           summary={summary()}
+          theme={theme}
           pinned={
             <Show when={note()}>
               {(n) => (
@@ -876,6 +877,7 @@ export function PluginList(props: { sessionID?: string }) {
                 title={GROUP_TITLE[g.kind]}
                 count={g.items.length}
                 defaultCollapsed={DEFAULT_COLLAPSED[g.kind]}
+                theme={theme}
               >
                 {(collapsed) => (
                   <>
@@ -890,7 +892,7 @@ export function PluginList(props: { sessionID?: string }) {
                     <Show when={g.kind === "builtin"} fallback={<For each={g.items}>{(e) => <RowBlock e={e} />}</For>}>
                       <For each={builtinSubGroups(g.items)}>
                         {(sub) => (
-                          <CollapsibleGroup title={sub.title} count={sub.items.length}>
+                          <CollapsibleGroup title={sub.title} count={sub.items.length} theme={theme}>
                             <For each={sub.items}>{(e) => <RowBlock e={e} />}</For>
                           </CollapsibleGroup>
                         )}
